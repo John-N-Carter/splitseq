@@ -1,24 +1,26 @@
 #!python3.10
-#~ import fnmatch as fn
-from fnmatch import translate, fnmatch, fnmatchcase
-from fnmatch import filter as fnfilter
-import re
-from splitseq import *
 
 if __name__ == '__main__': # testing and performance
+    # python library modules
     import sys, timeit, glob, random, os, string
     from enum import Enum, auto
-    import wcmatch.fnmatch as wc
     from time import process_time as time
-    from more_itertools import partition
     from itertools import tee, filterfalse
-    from more_itertools import bucket
-
     from collections import UserDict
+    from fnmatch import translate, fnmatch, fnmatchcase
+    from fnmatch import filter as fnfilter
+    import re
+    # pipy modules
+    import wcmatch.fnmatch as wc
+    from more_itertools import partition, bucket
     from boltons import dictutils
-    #~ import split as ssplit
-
+    # local modules
     import dictoflists
+    from splitseq import *
+    # Visulation modules
+    import matplotlib.pyplot as plt
+    import numpy as np
+
 
     def funcTimer(func):
         """This function returns the execution time of the function object passed."""
@@ -147,7 +149,7 @@ if __name__ == '__main__': # testing and performance
                         c = []
                         pred = lambda x: x[0]
                         base = string.ascii_letters + string.digits + '._-'
-                        e = fseq(a, pred, base)
+                        e = n_split(a, pred, base)
                     case Test.FSEQ2:
                         note = 'Function with unknown N classes'
                         b = []
@@ -378,7 +380,7 @@ if __name__ == '__main__': # testing and performance
                         res = translate(pat)
                         predx = re.compile(res).match
                         pred = lambda x: bool(predx(x))
-                        e = fseq(a, pred)
+                        e = n_split(a, pred)
                         b = e[True]
                         c = e[False]
                     case Test.FT2:
@@ -386,30 +388,30 @@ if __name__ == '__main__': # testing and performance
                         res = translate(pat)
                         predx = re.compile(res).match
                         pred = lambda x: bool(predx(x))
-                        e = fseq(a, pred, keys = [True, False])
+                        e = n_split(a, pred, keys = [True, False])
                         b = e[True]
                         c = e[False]
                     case Test.FT3:
                         note = 'Binary direct predicate, not predicted'
                         pred = lambda x: 'a' in x
-                        e = fseq(a, pred)
+                        e = n_split(a, pred)
                         b = e[True]
                         c = e[False]
                     case Test.FT4:
                         note = 'Binary direct predicate, predicted'
                         pred = lambda x: 'a' in x
-                        e = fseq(a, pred, keys = [True, False])
+                        e = n_split(a, pred, keys = [True, False])
                         b = e[True]
                         c = e[False]
                     case Test.FT6:
                         note = 'N Classes, predicted'
                         pred = lambda x: x[0]
                         base = string.ascii_letters + string.digits + '._-'
-                        e = fseq(a, pred, keys = base)
+                        e = n_split(a, pred, keys = base)
                     case Test.FT5:
                         note = 'N Classes, not predicted'
                         pred = lambda x: x[0]
-                        e = fseq(a, pred)
+                        e = n_split(a, pred)
                     case Test.FT7:
                         note = 'Binary, predefined clalses, direct check and inline'
                         e = {True: [], False: []}
@@ -484,14 +486,15 @@ if __name__ == '__main__': # testing and performance
                         c= []
         return b, c, note
 
-    output = 'loglin' # one of [bar, loglog, loglin, text]
-    #~ testlist = Test
+    # ckose the test to be performed
+    output = 'text' # one of [bar, loglog, loglin, text]
+    #~ testlist = Test # perform all tests
     testlist = [Test.FT1, Test.FT2, Test.FT3, Test.FT4,  Test.Easy, Test.CAPmess, Test.FT5, Test.FT6,
-        Test.Basic2, Test.Basic3]
+        Test.Basic2, Test.Basic3] # Specific testa
+
+
     match output:
         case 'bar':
-            import matplotlib.pyplot as plt
-            import numpy as np
             base = string.ascii_letters + string.digits + '._-'
             random.seed(123457)
             names = []
@@ -543,8 +546,6 @@ if __name__ == '__main__': # testing and performance
             plt.show()
 
         case 'loglog' | 'loglin' as gtype:
-            import matplotlib.pyplot as plt
-            import numpy as np
             TestCase = Test.FNmatch
             base = string.ascii_letters + string.digits + '._-'
             random.seed(123457)

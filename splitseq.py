@@ -3,11 +3,14 @@
 Inspired by very simole patern matching, where constructing a regular expression is over kill
 Uses fnmatch to compile glob pattern. Can post a raw re if mad enough.
 
-split(NAMES: list[str], PATTERN: str, RESULTS: tupple[bool, bool], is_re: bool, ignore_case: bool) -> tupple[matched: list[str], notmatched: list[str]].
-filter(NAMES: list[str], PATTERN: str, is_re: bool, ignore_case: bool) -> matched: list[str].
+b_split(NAMES: list[str], PATTERN: str, RESULTS: tupple[bool, bool], is_re: bool, ignore_case: bool) -> tupple[matched: list[str], notmatched: list[str]].
+b_filter(NAMES: list[str], PATTERN: str, is_re: bool, ignore_case: bool) -> matched: list[str].
+n_split(NAMES: list[], PRED, KEYS: list[] =  -> matched:dict[KEYS, list[]]
 
 NAMES - list of strings, usually file names.
 PATTERN - unix shell patern
+PRED - function called on each element of NAMES returning the key.
+KEYS - list of keys for predefinition or None.
 RESULTS - tuple indicating which matched sewuences shoul be returned.
     True, (True, ) , (True, None) returns the match and an empty list.
     (True, False) returns the list split into matched and unmatched, etc.
@@ -23,7 +26,7 @@ from fnmatch import translate, fnmatch, fnmatchcase
 from fnmatch import filter as fnfilter
 import re
 
-__all__ = ["b_split", "b_filter", "n_split_seq"]
+__all__ = ["b_split", "b_filter", "n_split"]
 
 def _filter(names, pattern_match):
     """Return the subset of the list NAMES that match compiled re PAT."""
@@ -102,7 +105,7 @@ def b_split(names: list[str], pat: str, test: bool = True, is_re: bool = False, 
             raise Exception('Target result not understood')
             print('bad')
 
-def n_split_seq(seq, pred, keys = []):
+def n_split(seq, pred, keys = []):
     """ n_seq: splits list into partitions controled by 'pred', option to pre-specy the keys."""
     """
     seq: List to split up
