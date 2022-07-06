@@ -64,10 +64,13 @@ The following test are presented below:
 10. N clases, inline, testing dictionary entries
 
 The bar chart below shows the timing results averaged for 100 iterations with 10000 entries in the test list.
+
 ![Bar Chart](bar_limited_1.png)
+
 The log/log plot below shows the performance between 10 and a million entries.
 
 It all starts to flatten off when there are less than about 500 elements in the test sequence.
 ![Bar Chart](log_log_limited_2.png)
+
 Finally the log/linear plot below confirms that when the sequence length is less than about 5 thousand all algorithms are equivalent.
 ![Bar Chart](log_lin_limited_2.png)
