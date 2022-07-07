@@ -14,6 +14,7 @@ if __name__ == '__main__': # testing and performance
     import wcmatch.fnmatch as wc
     from more_itertools import partition, bucket
     from boltons import dictutils
+    import toolz
     # local modules
     import dictoflists
     from splitseq import *
@@ -84,6 +85,8 @@ if __name__ == '__main__': # testing and performance
         FT10 = auto()
         FT11 = auto()
         FT12 = auto()
+        Toolz = auto()
+        Toolzb = auto()
 
     def CApartition(pred, iter):
         results = [], []
@@ -143,6 +146,20 @@ if __name__ == '__main__': # testing and performance
             pat = F'*[{ch}]*'
             for i in range(n):          # Only once round test loop as spliting sequence using remove is destructive.
                 match test: # patern matching used toparse test cases rather than if ,,. elif ... else .. chain
+                    case Test.Toolz:
+                        note = 'Function with N classes using toolz'
+                        b = []
+                        c = []
+                        pred = lambda x: x[0]
+                        e = toolz.groupby(pred, a)
+                    case Test.Toolzb:
+                        note = 'Function with binary classes using toolz'
+                        res = translate(pat)
+                        predx = re.compile(res).match
+                        pred = lambda x: bool(predx(x))
+                        e = toolz.groupby(pred, a)
+                        b = e[True]
+                        c = e[False]
                     case Test.FSEQ:
                         note = 'Function with preset N classes'
                         b = []
@@ -487,10 +504,10 @@ if __name__ == '__main__': # testing and performance
         return b, c, note
 
     # ckose the test to be performed
-    output = 'text' # one of [bar, loglog, loglin, text]
+    output = 'loglin' # one of [bar, loglog, loglin, text]
     #~ testlist = Test # perform all tests
-    testlist = [Test.FT1, Test.FT2, Test.FT3, Test.FT4,  Test.Easy, Test.CAPmess, Test.FT5, Test.FT6,
-        Test.Basic2, Test.Basic3] # Specific testa
+    testlist = [Test.FT1, Test.FT2, Test.FT3, Test.FT4,  Test.Easy, Test.CAPmess, Test.Toolzb, Test.FT5, Test.FT6,
+        Test.Basic2, Test.Basic3, Test.Toolz] # Specific testa
 
 
     match output:
@@ -529,7 +546,7 @@ if __name__ == '__main__': # testing and performance
                     if t == 0.:
                         t = 30.
                     y.append(t)
-                    print(tc, testnames, t)
+                    print(tc, testnames, repeat, t)
                 nlabels.append(note)
             width = 0.9 # the width of the bars
             fig, ax = plt.subplots()

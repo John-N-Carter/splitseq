@@ -41,11 +41,14 @@ def n_split(seq, pred, keys = []):
 It is used like this `a = n_split(b, lambda x: x[0], keys = ['a', 'b' ...])` where a is the output dictionary, b is the input list of strings beginning with lower case strings, a simple predicate returning the first character and `keys` is used to predefine the lowercase letters as valid elements. By inspection one can see it has two paths, with and without predefined `keys`. With keys is usually faster.
 
 This code is simple but could be extended for other container types. For example the predicate function could return a key based on a dictionary elements key and value. The return could now be a dictionary of dictionaries, or even a dictionary of sets if the container were a set.
+
+Subsequent testing has shown that `toolz.groupby` is slightly faster.
 ## Testing
 The file `test.py` contains code that tests many different ways of splitting sequences. The following external modules are required
 1. wcmatch
 2. more_itertools
 3. boltons
+3. toolz
 4. matplotlib
 5. numpy
 
