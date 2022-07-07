@@ -60,11 +60,13 @@ The following test are presented below:
 3. Binary direct predicate, not predicted
 4. Binary direct predicate, predicted
 5. Binary, Simply checking test character exists in name (ss)
-6. Binary, inspired by CAP and simple character check
+6. Binary, inspired by CAP and simple character
+6. Function with binary classes using toolz
 7. N Classes, not predicted
 8. N Classes, predicted
 9. N clases, inline, precomputing dictionary entries
 10. N clases, inline, testing dictionary entries
+11. Function with N classes using toolz
 
 The bar chart below shows the timing results averaged for 100 iterations with 10000 entries in the test list.
 
